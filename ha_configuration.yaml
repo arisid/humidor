@@ -1,0 +1,7 @@
+homeassistant:
+  media_dirs:
+    ai_temp: /share/ai_temp
+
+  customize:
+    camera.esp32s3cam_kamera:
+      exposed_to_assist: true

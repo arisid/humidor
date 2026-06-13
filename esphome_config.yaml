@@ -1,0 +1,262 @@
+esphome:
+  name: esphome-web-28a8ec
+  friendly_name: ESP32S3CAM
+  min_version: 2026.5.2
+  name_add_mac_suffix: false
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  framework:
+    type: esp-idf
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+logger:
+
+api:
+  encryption:
+    key: "ZDE_VLOZTE_VAS_VLASTNI_API_KLIC" # ZDE VLOŽTE VÁŠ VLASTNÍ API KLÍČ (32 znaků, base64)
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+web_server:
+  port: 80
+  auth:
+    username: !secret web_admin_user
+    password: !secret web_admin_password
+
+i2c:
+  - id: camera_i2c
+    sda: GPIO4
+    scl: GPIO5
+    scan: false
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: rgb_led
+    name: "RGB LED"
+    pin: GPIO48
+    num_leds: 1
+    chipset: WS2812
+    rgb_order: GRB
+    effects:
+      - strobe:
+          name: "Fast Blink"
+          colors:
+            - state: true
+              brightness: 42%
+              red: 0%
+              green: 100%
+              blue: 0%
+              duration: 200ms
+            - state: false
+              duration: 200ms
+          default_transition_length: 0s
+
+select:
+  - platform: template
+    name: "Barva LED"
+    id: led_color
+    options:
+      - "Vypnuto"
+      - "Červená"
+      - "Zelená"
+      - "Modrá"
+      - "Oranžová"
+      - "Fialová"
+      - "Teplá bílá"
+      - "Neutrální bílá"
+      - "Studená bílá"
+    initial_option: "Vypnuto"
+    optimistic: true
+    set_action:
+      - lambda: |-
+          auto call = id(rgb_led).turn_on();
+          if (x == "Vypnuto") id(rgb_led).turn_off();
+          else if (x == "Červená") call.set_rgb(1.0, 0.0, 0.0);
+          else if (x == "Zelená") call.set_rgb(0.0, 1.0, 0.0);
+          else if (x == "Modrá") call.set_rgb(0.0, 0.0, 1.0);
+          else if (x == "Oranžová") call.set_rgb(1.0, 0.5, 0.0);
+          else if (x == "Fialová") call.set_rgb(0.8, 0.0, 0.4);
+          else if (x == "Teplá bílá") call.set_rgb(1.0, 0.8, 0.5);
+          else if (x == "Neutrální bílá") call.set_rgb(1.0, 1.0, 1.0);
+          else if (x == "Studená bílá") call.set_rgb(0.8, 0.9, 1.0);
+          call.perform();
+
+esp32_camera:
+  name: Kamera
+  i2c_id: camera_i2c
+  external_clock:
+    pin: GPIO15
+    frequency: 10MHz
+  data_pins: [GPIO11, GPIO9, GPIO8, GPIO10, GPIO12, GPIO18, GPIO17, GPIO16]
+  vsync_pin: GPIO6
+  href_pin: GPIO7
+  pixel_clock_pin: GPIO13
+  pixel_format: YUV422
+  resolution: 640x480
+  frame_buffer_count: 2
+  frame_buffer_location: PSRAM
+  max_framerate: 5fps
+  idle_framerate: 0.2fps
+  jpeg_quality: 10
+  vertical_flip: true
+  horizontal_mirror: false
+  agc_mode: auto
+
+esp32_camera_web_server:
+  - port: 8081
+    mode: snapshot
+
+one_wire:
+  - platform: gpio
+    pin: GPIO1
+
+sensor:
+  - platform: dallas_temp
+    name: "Teplota boxu"
+    id: temp_box
+    # POZOR: Změňte tuto adresu na svou vlastní z ESPHome logu!
+    address: 0x650b24a17f7ae128 
+    update_interval: 5s
+  - platform: internal_temperature
+    name: "Teplota čipu ESP32"
+  - platform: wifi_signal
+    name: "WiFi Signál"
+  - platform: uptime
+    name: "Doba běhu"
+  - platform: template
+    name: "Výkon Peltieru"
+    id: peltier_power
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+  - platform: template
+    name: "PWM vnitřního ventilátoru"
+    id: inner_fan_pwm_pct
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+  - platform: template
+    name: "PWM vnějšího ventilátoru"
+    id: outer_fan_pwm_pct
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+
+  - platform: pulse_counter
+    pin:
+      number: GPIO39
+      mode: INPUT_PULLUP
+    name: "Otáčky vnitřního ventilátoru"
+    update_interval: 5s
+    filters:
+      - multiply: 0.5
+  - platform: pulse_counter
+    pin:
+      number: GPIO41
+      mode: INPUT_PULLUP
+    name: "Otáčky vnějšího ventilátoru"
+    update_interval: 5s
+    filters:
+      - multiply: 0.5
+
+output:
+  - platform: ledc
+    pin: GPIO21
+    frequency: 15000 Hz
+    id: peltier_pwm
+  - platform: ledc
+    pin: GPIO38
+    id: pwm_vnitrni_fan
+    frequency: 25000 Hz
+  - platform: ledc
+    pin: GPIO40
+    id: pwm_vnejsi_fan
+    frequency: 25000 Hz
+
+number:
+  - platform: template
+    name: "Cílová teplota"
+    id: target_temp
+    min_value: 4
+    max_value: 22
+    step: 0.5
+    initial_value: 12
+    restore_value: true
+    optimistic: true
+    set_action:
+      - lambda: |-
+          id(integral) = 0;
+
+globals:
+  - id: integral
+    type: float
+    restore_value: no
+    initial_value: '0.0'
+  - id: current_output
+    type: float
+    restore_value: no
+    initial_value: '0.0'
+
+interval:
+  - interval: 5s
+    then:
+      - lambda: |-
+          float T = id(temp_box).state;
+          float target = id(target_temp).state;
+          if (isnan(T)) return;
+          float error = T - target;
+          if (abs(error) < 0.3) { error = 0; }
+          float Kp = 0.08;
+          float Ki = 0.003;
+          id(integral) += error * Ki;
+          if (id(integral) > 0.95) id(integral) = 0.95;
+          if (id(integral) < 0.0)  id(integral) = 0.0;
+          float output = (error * Kp) + id(integral);
+          if (output > 1.0) output = 1.0;
+          if (output < 0.0) output = 0.0;
+          float alpha = 0.35;
+          output = (id(current_output) * (1 - alpha)) + (output * alpha);
+          float max_step = 0.08;
+          if (output > id(current_output) + max_step) output = id(current_output) + max_step;
+          if (output < id(current_output) - max_step) output = id(current_output) - max_step;
+          id(current_output) = output;
+          id(peltier_pwm).set_level(output);
+          id(peltier_power).publish_state(output * 100.0);
+          
+          const float inner_min_pwm = 200.0f / 1308.0f;
+          float inner_pwm = inner_min_pwm + output * (1.0f - inner_min_pwm);
+          if (inner_pwm < inner_min_pwm) inner_pwm = inner_min_pwm;
+          id(pwm_vnitrni_fan).set_level(inner_pwm);
+          id(inner_fan_pwm_pct).publish_state(inner_pwm * 100.0f);
+          id(pwm_vnejsi_fan).set_level(output);
+          id(outer_fan_pwm_pct).publish_state(output * 100.0f);
+
+  - interval: 5s
+    then:
+      - lambda: |-
+          if (id(temp_box).state < 0.0) {
+            id(peltier_pwm).set_level(0);
+            id(peltier_power).publish_state(0);
+            id(pwm_vnitrni_fan).set_level(200.0f / 1308.0f);
+            id(pwm_vnejsi_fan).set_level(0);
+          }
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO47
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Tlačítko analýzy"
+    id: tlacitko
+    on_press:
+      then:
+        - homeassistant.event:
+            event: esphome.lednice_analyza

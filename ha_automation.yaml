@@ -1,0 +1,42 @@
+alias: "Humidor: AI analýza a nastavení teploty"
+description: Analýza obrazu z ESP32-S3 pomocí LLM Vision a Gemini 3.1 Flash Lite
+triggers:
+  - event_type: esphome.lednice_analyza
+    id: tlacitko_stisknuto
+    trigger: event
+actions:
+  - target:
+      entity_id: camera.esp32s3cam_kamera
+    data:
+      filename: /share/ai_temp/temp_napoje.jpg
+    action: camera.snapshot
+  - delay: "00:00:02"
+  - data:
+      # Provider ID získáte v Developer Tools -> Actions -> llmvision.image_analyzer
+      provider: "<VAŠE_PROVIDER_ID>" 
+      model: gemini-3.1-flash-lite
+      message: >
+        Na přiloženém obrázku je nápoj, který chci dát vychladit do lednice. Urči
+        optimální teplotu pro jeho konzumaci ve stupních Celsia. Odpověz VÝHRADNĚ
+        jedním celým číslem. Nic jiného nepiš. Pokud obrázek z nějakého důvodu
+        nevidíš, napiš číslo 21.
+      image_file: /share/ai_temp/temp_napoje.jpg
+    response_variable: gemini_odpoved
+    action: llmvision.image_analyzer
+  - target:
+      entity_id: number.esp32s3cam_cilova_teplota
+    data:
+      value: >
+        {% set text = '12' %}
+        {% if gemini_odpoved is defined %}
+          {% if gemini_odpoved.response is defined %}
+            {% set text = gemini_odpoved.response %}
+          {% elif gemini_odpoved.text is defined %}
+            {% set text = gemini_odpoved.text %}
+          {% else %}
+            {% set text = gemini_odpoved | string %}
+          {% endif %}
+        {% endif %}
+        {{ text | int }}
+    action: number.set_value
+mode: single

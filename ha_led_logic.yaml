@@ -1,0 +1,46 @@
+alias: "Humidor: LED Indikace stavu"
+description: >-
+  Mění barvu a efekt RGB LED podle odchylky teploty od cíle. Jas je fixně 42 %.
+triggers:
+  - entity_id: sensor.esp32s3cam_teplota_boxu
+    trigger: state
+  - entity_id: number.esp32s3cam_cilova_teplota
+    trigger: state
+conditions:
+  - condition: template
+    value_template: >-
+      {{ states('sensor.esp32s3cam_teplota_boxu') not in ['unavailable', 'unknown'] and 
+         states('number.esp32s3cam_cilova_teplota') not in ['unavailable', 'unknown'] }}
+actions:
+  - choose:
+      - conditions:
+          - condition: template
+            # Oprava syntaxe: Kontrola dosažení cílové teploty s tolerancí 0.5°C
+            value_template: |-
+              {{ (states('sensor.esp32s3cam_teplota_boxu') | float) <= (states('number.esp32s3cam_cilova_teplota') | float + 0.5) }}
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.esp32s3cam_rgb_led
+            data:
+              brightness_pct: 42
+              rgb_color: [0, 255, 0]
+              effect: Fast Blink
+    default:
+      - action: light.turn_on
+        target:
+          entity_id: light.esp32s3cam_rgb_led
+        data:
+          brightness_pct: 42
+          effect: None
+          rgb_color: >-
+            {% set realna = states('sensor.esp32s3cam_teplota_boxu') | float %}
+            {% set cilova = states('number.esp32s3cam_cilova_teplota') | float %}
+            {% set rozdil = realna - cilova %}
+            {% if rozdil < 0.5 %} [0, 255, 0]    {# Zelená - Cíl dosažen #}
+            {% elif rozdil < 1.5 %} [0, 0, 255]  {# Modrá - Mírná odchylka #}
+            {% elif rozdil < 3 %} [128, 0, 128] {# Fialová - Střední odchylka #}
+            {% elif rozdil <= 5 %} [255, 127, 0] {# Oranžová - Vysoká odchylka #}
+            {% else %} [255, 0, 0]              {# Červená - Kritická odchylka #}
+            {% endif %}
+mode: restart
