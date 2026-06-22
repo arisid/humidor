@@ -5,10 +5,26 @@
 ## 📖 Popis Projektu
 
 ### Čeština
-AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačních XPS desek. Systém využívá **Peltierův článek** v kombinaci s aktivními CPU chladiči pro účinné chlazení s přesnou kontrolou teploty. Zařízení je vybaveno **ESP32-S3-CAM** s OV2640 kamerou pro AI analýzu a je řízeno přes **Home Assistant** s výkonným PI regulátorem.
+AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačních XPS desek. Systém využívá **Peltierův článek** v kombinaci s aktivními CPU chladiči pro tepelný výměn. Jádrem je **ESP32-S3 s kamerou OV2640**, která díky integraci s LLM Vision zajišťuje AI analýzu obsahu. Vše je řízeno přes **Home Assistant** s pokročilou automatizací a LED indikacemi.
 
 ### English
-The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle storage, constructed from high-insulation XPS foam. The system employs a **Peltier element** paired with active CPU heatsinks for efficient temperature control. Equipped with **ESP32-S3-CAM** and OV2640 camera for AI vision capabilities, managed via **Home Assistant** with advanced PI temperature regulation.
+The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle storage, constructed from high-insulation XPS foam. The system employs a **Peltier element** paired with active CPU heatsinks for heat dissipation. At its core is an **ESP32-S3 with OV2640 camera**, enabling AI content analysis through LLM Vision integration. Everything is controlled via **Home Assistant** with advanced automation and LED indicators.
+
+---
+
+## 📸 Galerie Projektu
+
+### Schéma Zapojení
+![Schema zapojení](images/schema.png)
+
+### Hardware a Montáž
+![Engine Unit](images/engine-unit.png)
+![HBF Komponenty](images/hbf.png)
+![HBF Detail 1](images/hbf1.png)
+![HBF Detail 2](images/hbf2.png)
+
+### Fotodokumentace
+![Finální projekt](images/IMG_20260618_154138.jpg)
 
 ---
 
@@ -100,7 +116,13 @@ humidor/
 ├── ha_configuration.yaml        # Home Assistant entity definice
 ├── ha_automation.yaml           # Automation a AI logika
 ├── ha_led_logic.yaml            # LED indikace logika
-├── images/                      # 📸 Fotky projektu
+├── images/                      # 📸 Fotky a schémata projektu
+│   ├── schema.png               # Elektrikální schéma
+│   ├── engine-unit.png          # Chladicí jednotka
+│   ├── hbf.png                  # Hardware komponenty
+│   ├── hbf1.png                 # Detail 1
+│   ├── hbf2.png                 # Detail 2
+│   └── IMG_20260618_154138.jpg  # Finální projekt
 └── LICENSE                      # MIT License
 ```
 
