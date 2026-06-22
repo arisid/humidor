@@ -5,7 +5,7 @@
 ## 📖 Popis Projektu
 
 ### Čeština
-AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačních XPS desek. Systém využívá **Peltierův článek** v kombinaci s aktivními CPU chladiči pro tepelný výměn. Jádrem je **ESP32-S3 s kamerou OV2640**, která díky integraci s LLM Vision zajišťuje AI analýzu obsahu. Vše je řízeno přes **Home Assistant** s pokročilou automatizací a LED indikacemi.
+AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačního XPS boxu a chladicího systému. Systém využívá **Peltierův článek** v kombinaci s aktivními CPU chladiči pro tepelnou výměnu. Jádrem je **ESP32-S3 s kamerou OV2640**, která díky integraci s LLM Vision zajišťuje AI analýzu obsahu. Vše je řízeno přes **Home Assistant** s pokročilou automatizací a LED indikacemi.
 
 ### English
 The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle storage, constructed from high-insulation XPS foam. The system employs a **Peltier element** paired with active CPU heatsinks for heat dissipation. At its core is an **ESP32-S3 with OV2640 camera**, enabling AI content analysis through LLM Vision integration. Everything is controlled via **Home Assistant** with advanced automation and LED indicators.
