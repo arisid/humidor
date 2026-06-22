@@ -117,7 +117,7 @@ humidor/
 ├── ha_automation.yaml           # Automation a AI logika
 ├── ha_led_logic.yaml            # LED indikace logika
 ├── images/                      # 📸 Fotky a schémata projektu
-│   ├── schema.png               # Elektrikální schéma
+│   ├── schema.png               # Schéma zapojení
 │   ├── engine-unit.png          # Chladicí jednotka
 │   ├── hbf.png                  # Hardware komponenty
 │   ├── hbf1.png                 # Detail 1
