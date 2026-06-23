@@ -151,7 +151,7 @@ humidor/
 
 ## 📝 Licence
 
-Projekt je vydán pod [MIT License](LICENSE).
+Projekt je vydán pod [License](LICENSE).
 
 ---
 
