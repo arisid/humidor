@@ -15,9 +15,7 @@ The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle 
 ## 📸 Galerie Projektu
 
 ### Schéma Zapojení
-<div align="center">
-  <img src="images/schema-cor.jpg" alt="Schéma zapojení: AI Chytrý Humidor" width="900" />
-</div>
+![Schema](images/schema-cor.png)
 
 ### Hardware a Montáž
 ![Engine Unit](images/engine-unit.png)
