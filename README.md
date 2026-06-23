@@ -5,17 +5,17 @@
 ## 📖 Popis Projektu
 
 ### Čeština
-AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačního XPS boxu a chladicího systému. Systém využívá **Peltierův článek** v kombinaci s aktivními CPU chladiči pro tepelnou výměnu. Jádrem je **ESP32-S3 s kamerou OV2640**, která díky integraci s LLM Vision zajišťuje AI analýzu obsahu. Vše je řízeno přes **Home Assistant** s pokročilou automatizací a LED indikacemi.
+AI Smart Humidor je **inteligentní chladicí box** s kapacitou pro dvě láhve vína, zkonstruovaný z izolačního XPS boxu a chladicího systému. Systém využívá **Peltierův článek** v kombinaci s aktivním chlazením pomocí CPU chladičů a je řízen přes ESPHome běžící na ESP32-S3.
 
 ### English
-The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle storage, constructed from high-insulation XPS foam. The system employs a **Peltier element** paired with active CPU heatsinks for heat dissipation. At its core is an **ESP32-S3 with OV2640 camera**, enabling AI content analysis through LLM Vision integration. Everything is controlled via **Home Assistant** with advanced automation and LED indicators.
+The **AI Smart Humidor** is an intelligent cooling box designed for wine bottle storage, constructed from high-insulation XPS foam. The system employs a **Peltier element** paired with active CPU cooling and is controlled via ESPHome on an ESP32-S3.
 
 ---
 
 ## 📸 Galerie Projektu
 
 ### Schéma Zapojení
-![Schema zapojení](images/schema.png)
+![Schema zapojení](images/schema-cor.jpg)
 
 ### Hardware a Montáž
 ![Engine Unit](images/engine-unit.png)
@@ -117,7 +117,7 @@ humidor/
 ├── ha_automation.yaml           # Automation a AI logika
 ├── ha_led_logic.yaml            # LED indikace logika
 ├── images/                      # 📸 Fotky a schémata projektu
-│   ├── schema.png               # Schéma zapojení
+│   ├── schema-cor.jpg           # Schéma zapojení (opraveno)
 │   ├── engine-unit.png          # Chladicí jednotka
 │   ├── hbf.png                  # Hardware komponenty
 │   ├── hbf1.png                 # Detail 1
