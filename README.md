@@ -145,7 +145,7 @@ humidor/
 - ✅ **AI Vision** - OV2640 kamera pro analýzu obsahu
 - ✅ **Smart Integration** - Plná integrace s Home Assistant
 - ✅ **Low Power** - Efektivní chlazení s Peltierovým prvkem
-- ✅ **Open Source** - MIT License, plně otevřený kód
+- ✅ **Open Source** - otevřený kód pro osobní účely
 
 ---
 
