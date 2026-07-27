@@ -104,9 +104,6 @@ Nahraďte v `ha_automation.yaml`:
 # → Home Assistant → Vývojářské nástroje → Akce
 # → llmvision.image_analyze
 ```
-V poslední fázi byly přilepené na dvířka humidoru akrylové samolepící zrcadla. Tím kamera vidí dobře vložený nápoj a identifikace probíhá uvnitř humidoru. Dostatečné vnitřní osvětlení zajišťuje 3V LED 10mm bílá čirá 15Cd/ 20mA 30° připojená přímo na 3,3V větev z breakoutboardu.
-
-```
 
 ---
 
@@ -150,6 +147,8 @@ humidor/
 - ✅ **Low Power** - Efektivní chlazení s Peltierovým prvkem
 - ✅ **Open Source** - otevřený kód pro osobní účely
 
+
+V poslední fázi byly přilepené na dvířka humidoru akrylové samolepící zrcadla. Tím kamera vidí dobře vložený nápoj a identifikace probíhá uvnitř humidoru. Dostatečné vnitřní osvětlení zajišťuje 3V LED 10mm bílá čirá 15Cd/ 20mA 30° připojená přímo na 3,3V větev z breakoutboardu.
 ---
 
 ## 📝 Licence
