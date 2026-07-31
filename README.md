@@ -162,6 +162,7 @@ Chcete přispět? Podívejte se na [CONTRIBUTING.md](CONTRIBUTING.md) pro více 
 
 ---
 V poslední fázi byly přilepené na dvířka humidoru akrylové samolepící zrcadla. Tím kamera vidí dobře vložený nápoj a identifikace probíhá uvnitř humidoru. Dostatečné vnitřní osvětlení zajišťuje 3V LED 10mm bílá čirá 15Cd/ 20mA 30° připojená přímo na 3,3V větev z breakoutboardu.
+Vše lze nyní spínat vzdáleně pomocí ESP32 zásuvky s ESPhome z ENBAT.cz: https://www.enbat.cz/cs/335370-xtend-solarmi-esp32-c3-zasuvka-pro-chytry-dum-wi-fi-bluetooth-esphome-mereni-spotreby-100-250v-max-16a-bila 
 
 **Vytvořeno:** 2026  
 **Status:** 🟢 Aktivní vývoj
